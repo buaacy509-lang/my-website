@@ -11,7 +11,6 @@ export default function NewArticlePage() {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    slug: '',
     categoryId: '',
     tagIds: [] as string[],
     published: false,
@@ -47,23 +46,6 @@ export default function NewArticlePage() {
     } catch (error) {
       console.error('Failed to fetch tags:', error)
     }
-  }
-
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .substring(0, 50)
-  }
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const title = e.target.value
-    setFormData(prev => ({
-      ...prev,
-      title,
-      slug: generateSlug(title),
-    }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -103,23 +85,9 @@ export default function NewArticlePage() {
           <input
             type="text"
             value={formData.title}
-            onChange={handleTitleChange}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="文章标题"
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            URL Slug *
-          </label>
-          <input
-            type="text"
-            value={formData.slug}
-            onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="article-url-slug"
             required
           />
         </div>

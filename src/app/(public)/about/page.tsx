@@ -7,31 +7,30 @@ export default function AboutPage() {
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 space-y-6">
         <div className="flex items-center justify-center">
-          <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center text-4xl">
-            👨‍💻
-          </div>
+          <img
+            src="/images/avatar.jpg"
+            alt="头像"
+            className="w-32 h-32 rounded-full object-cover"
+          />
         </div>
 
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">博主</h2>
-          <p className="text-gray-600">全栈开发者 / 技术爱好者</p>
+          <p className="font-bold"><span className="text-red-600">交易爱好者</span><span className="text-blue-600">/前沿技术追踪</span><span className="text-green-600">/宏观市场分析</span></p>
         </div>
 
         <div className="prose prose-lg max-w-none">
           <p>
-            欢迎来到我的个人博客！我是一名热爱技术的开发者，这个博客是我记录学习历程、分享技术心得的地方。
+            欢迎来到我的个人博客！我是一名交易爱好者，曾经连续亏损7年，两次负债百万，依靠黄金牛市，从3w做到3000w，这个博客是我记录学习历程、分享技术心得的地方。
           </p>
           
           <p>
             在这里，你可以找到：
           </p>
-          
-          <ul>
-            <li>前端开发技术分享（React、Vue、Next.js等）</li>
-            <li>后端开发经验（Node.js、数据库设计等）</li>
-            <li>开发工具和工作流程优化</li>
-            <li>技术问题的解决方案</li>
-          </ul>
+
+          <p>
+            我对宏观判断，市场的分析，世界的思考和人生的感悟。
+          </p>
 
           <p>
             如果你有任何问题或建议，欢迎在问答专区提问，或者通过以下方式联系我：

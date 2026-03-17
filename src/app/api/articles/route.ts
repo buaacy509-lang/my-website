@@ -3,6 +3,32 @@ import { prisma } from '@/lib/db'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth-options'
 
+// 生成 slug 的辅助函数
+function generateSlug(title: string): string {
+  // 转换为小写，替换空格为连字符，移除特殊字符
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .substring(0, 50)
+}
+
+// 获取唯一的 slug
+async function getUniqueSlug(title: string): Promise<string> {
+  let slug = generateSlug(title)
+  let counter = 1
+  
+  // 检查 slug 是否已存在
+  while (await prisma.article.findUnique({ where: { slug } })) {
+    // 如果存在，添加数字后缀
+    slug = `${generateSlug(title)}-${counter}`
+    counter++
+  }
+  
+  return slug
+}
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url)
@@ -68,26 +94,17 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { title, content, slug, categoryId, tagIds, published } = await req.json()
+    const { title, content, categoryId, tagIds, published } = await req.json()
 
-    if (!title || !content || !slug || !categoryId) {
+    if (!title || !content || !categoryId) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       )
     }
 
-    // Check if slug already exists
-    const existing = await prisma.article.findUnique({
-      where: { slug },
-    })
-
-    if (existing) {
-      return NextResponse.json(
-        { error: 'Slug already exists' },
-        { status: 400 }
-      )
-    }
+    // 自动生成唯一的 slug
+    const slug = await getUniqueSlug(title)
 
     const article = await prisma.article.create({
       data: {
